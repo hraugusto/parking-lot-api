@@ -83,3 +83,7 @@ Returns a JWT token valid for 1 hour.
 - The lot has **20 spots** initialized on first run
 - Data persists in a local SQLite database
 - Passwords are hashed with bcryptjs
+
+## 🌐 Live Demo
+
+API deployed at: https://parking-lot-api-production.up.railway.app
