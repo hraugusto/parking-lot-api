@@ -10,6 +10,14 @@ db.exec(`
   )
 `);
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    senha TEXT NOT NULL
+  )
+`);
+
 // Inicializa as 20 vagas se a tabela estiver vazia
 const count = db.prepare('SELECT COUNT(*) as total FROM vagas').get();
 if (count.total === 0) {
