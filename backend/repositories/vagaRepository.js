@@ -1,30 +1,21 @@
-let vagas = [];
-for (let i = 1; i <= 20; i++) {
-  vagas.push({ id: i, ocupado: false, placa: null, modelo: null });
-}
+const db = require('../database');
 
 function buscarTodas() {
-  return vagas;
+  return db.prepare('SELECT * FROM vagas').all();
 }
 
 function buscarPorId(id) {
-  return vagas.find(v => v.id === id);
+  return db.prepare('SELECT * FROM vagas WHERE id = ?').get(id);
 }
 
 function ocupar(id, placa, modelo) {
-  const vaga = vagas.find(v => v.id === id);
-  vaga.ocupado = true;
-  vaga.placa = placa;
-  vaga.modelo = modelo;
-  return vaga;
+  db.prepare('UPDATE vagas SET ocupado = 1, placa = ?, modelo = ? WHERE id = ?').run(placa, modelo, id);
+  return buscarPorId(id);
 }
 
 function liberar(id) {
-  const vaga = vagas.find(v => v.id === id);
-  vaga.ocupado = false;
-  vaga.placa = null;
-  vaga.modelo = null;
-  return vaga;
+  db.prepare('UPDATE vagas SET ocupado = 0, placa = NULL, modelo = NULL WHERE id = ?').run(id);
+  return buscarPorId(id);
 }
 
 module.exports = { buscarTodas, buscarPorId, ocupar, liberar };

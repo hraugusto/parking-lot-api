@@ -1,59 +1,64 @@
-# Backend de Sistema de Estacionamento
+# 🅿️ Parking Lot API
 
-Este é um backend simples para um sistema de estacionamento com 20 vagas, construído com Node.js e Express.
+A RESTful API for managing parking lot spots, built with Node.js and Express.
+This project was developed to practice layered architecture (Repository → Service → Controller → Routes).
 
-## Instalação
+## 🛠️ Tech Stack
 
-1. Navegue para a pasta do projeto:
-   ```
-   cd backend
-   ```
+- **Node.js**
+- **Express**
+- In-memory data storage
 
-2. Instale as dependências:
-   ```
-   npm install
-   ```
-
-## Executando o Servidor
-
-Para iniciar o servidor:
+## 📁 Project Structure
 ```
-npm start
+backend/
+├── controllers/    # Handles HTTP requests and responses
+├── services/       # Business logic and validations
+├── repositories/   # Data access layer
+├── routes/         # API route definitions
+└── server.js       # App entry point
 ```
 
-O servidor será executado em `http://localhost:3000`.
+## 🚀 Getting Started
 
-## Endpoints da API
+### Prerequisites
+- Node.js installed
 
-### GET /vagas
-Retorna todas as vagas de estacionamento (1 a 20), mostrando se estão ocupadas e os detalhes do veículo.
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/hraugusto/parking-lot-api.git
 
-### GET /vagas/:id
-Retorna os detalhes de uma vaga específica (id de 1 a 20).
+# Navigate to the backend folder
+cd parking-lot-api/backend
 
-### POST /vagas/:id
-Estaciona um veículo em uma vaga específica. Corpo da requisição:
+# Install dependencies
+npm install
+
+# Start the server
+node server.js
+```
+
+Server will run at `http://localhost:3000`
+
+## 📌 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/vagas` | List all parking spots |
+| GET | `/vagas/:id` | Get a specific spot by ID |
+| POST | `/vagas/:id` | Park a vehicle (requires `placa` and `modelo`) |
+| DELETE | `/vagas/:id` | Release a parking spot |
+
+### Request example (POST /vagas/1)
 ```json
 {
   "placa": "ABC-1234",
-  "modelo": "Fusca"
+  "modelo": "Toyota Corolla"
 }
 ```
-Retorna erro se a vaga já estiver ocupada ou se placa/modelo não forem fornecidos.
 
-### DELETE /vagas/:id
-Remove o veículo de uma vaga específica, deixando-a vazia.
+## 📝 Notes
 
-## Exemplo de Uso
-
-Você pode usar ferramentas como Postman ou curl para testar a API.
-
-Exemplo com curl para estacionar um veículo na vaga 1:
-```
-curl -X POST http://localhost:3000/vagas/1 -H "Content-Type: application/json" -d '{"placa":"ABC-1234","modelo":"Fusca"}'
-```
-
-Exemplo para remover:
-```
-curl -X DELETE http://localhost:3000/vagas/1
-```
+- The lot has **20 spots** initialized in memory
+- Data resets when the server restarts (no database)
