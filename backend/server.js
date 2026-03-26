@@ -32,6 +32,10 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes);
 app.use('/vagas', autenticar, vagaRoutes);
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
