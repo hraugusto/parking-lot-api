@@ -1,22 +1,33 @@
 # 🅿️ Parking Lot API
 
-A RESTful API for managing parking lot spots, built with Node.js and Express.
+A RESTful API for managing parking lot spots with JWT authentication, built with Node.js and Express.
 This project was developed to practice layered architecture (Repository → Service → Controller → Routes).
 
 ## 🛠️ Tech Stack
 
 - **Node.js**
 - **Express**
-- In-memory data storage
+- **SQLite** (better-sqlite3)
+- **JWT** (jsonwebtoken)
+- **bcryptjs**
 
 ## 📁 Project Structure
 ```
 backend/
-├── controllers/    # Handles HTTP requests and responses
-├── services/       # Business logic and validations
-├── repositories/   # Data access layer
-├── routes/         # API route definitions
-└── server.js       # App entry point
+├── controllers/        # Handles HTTP requests and responses
+│   ├── authController.js
+│   └── vagaController.js
+├── middlewares/        # JWT authentication middleware
+│   └── authMiddleware.js
+├── services/           # Business logic and validations
+│   └── vagaService.js
+├── repositories/       # Data access layer
+│   └── vagaRepository.js
+├── routes/             # API route definitions
+│   ├── authRoutes.js
+│   └── vagaRoutes.js
+├── database.js         # SQLite connection and setup
+└── server.js           # App entry point
 ```
 
 ## 🚀 Getting Started
@@ -26,39 +37,49 @@ backend/
 
 ### Installation
 ```bash
-# Clone the repository
 git clone https://github.com/hraugusto/parking-lot-api.git
-
-# Navigate to the backend folder
 cd parking-lot-api/backend
-
-# Install dependencies
 npm install
-
-# Start the server
 node server.js
 ```
 
 Server will run at `http://localhost:3000`
 
+## 🔐 Authentication
+
+All `/vagas` routes require a Bearer Token in the Authorization header.
+
+### Register
+**POST** `/auth/register`
+```json
+{ "email": "user@email.com", "senha": "123456" }
+```
+
+### Login
+**POST** `/auth/login`
+```json
+{ "email": "user@email.com", "senha": "123456" }
+```
+Returns a JWT token valid for 1 hour.
+
 ## 📌 API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/vagas` | List all parking spots |
-| GET | `/vagas/:id` | Get a specific spot by ID |
-| POST | `/vagas/:id` | Park a vehicle (requires `placa` and `modelo`) |
-| DELETE | `/vagas/:id` | Release a parking spot |
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/auth/register` | ❌ | Register a new user |
+| POST | `/auth/login` | ❌ | Login and get token |
+| GET | `/vagas` | ✅ | List all parking spots |
+| GET | `/vagas/:id` | ✅ | Get a specific spot |
+| POST | `/vagas/:id` | ✅ | Park a vehicle |
+| DELETE | `/vagas/:id` | ✅ | Release a spot |
 
-### Request example (POST /vagas/1)
+### Park a vehicle (POST /vagas/1)
 ```json
-{
-  "placa": "ABC-1234",
-  "modelo": "Toyota Corolla"
-}
+{ "placa": "ABC-1234", "modelo": "Toyota Corolla" }
 ```
 
 ## 📝 Notes
 
-- The lot has **20 spots** initialized in memory
-- Data resets when the server restarts (no database)
+- The lot has **20 spots** initialized on first run
+- Data persists in a local SQLite database
+- Passwords are hashed with bcryptjs
