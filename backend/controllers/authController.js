@@ -1,9 +1,9 @@
-
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../database');
 
-const SECRET = 'minha_chave_secreta';
+const SECRET = process.env.JWT_SECRET;
 
 function register(req, res) {
   try {

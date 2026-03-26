@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const vagaRoutes = require('./routes/vagaRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -31,5 +33,5 @@ app.use('/auth', authRoutes);
 app.use('/vagas', autenticar, vagaRoutes);
 
 app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:3000`);
+  console.log(`Servidor rodando em http://localhost:${port}`);
 });
