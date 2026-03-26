@@ -1,8 +1,18 @@
 const vagaService = require('../services/vagaService');
 
 function buscarTodas(req, res) {
-  const vagas = vagaService.buscarTodas();
-  res.status(200).json(vagas);
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+
+  const { vagas, total } = vagaService.buscarTodas(page, limit);
+
+  res.status(200).json({
+    data: vagas,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit)
+  });
 }
 
 function buscarPorId(req, res) {

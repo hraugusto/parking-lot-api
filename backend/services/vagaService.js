@@ -1,7 +1,7 @@
 const vagaRepository = require('../repositories/vagaRepository');
 
-function buscarTodas() {
-  return vagaRepository.buscarTodas();
+function buscarTodas(page, limit) {
+  return vagaRepository.buscarTodas(page, limit);
 }
 
 function buscarPorId(id) {

@@ -1,7 +1,10 @@
 const db = require('../database');
 
-function buscarTodas() {
-  return db.prepare('SELECT * FROM vagas').all();
+function buscarTodas(page, limit) {
+  const offset = (page - 1) * limit;
+  const vagas = db.prepare('SELECT * FROM vagas LIMIT ? OFFSET ?').all(limit, offset);
+  const total = db.prepare('SELECT COUNT(*) as total FROM vagas').get().total;
+  return { vagas, total };
 }
 
 function buscarPorId(id) {
