@@ -1,6 +1,8 @@
 require('dotenv').config();
 
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -56,6 +58,11 @@ app.get('/', (req, res) => {
           <div class="endpoint"><span class="method delete">DEL</span> /vagas/:id <span class="lock">🔒 JWT</span></div>
         </div>
 
+        <div class="section">
+          <h2>Docs</h2>
+          <div class="endpoint"><span class="method get">GET</span> <a href="/api-docs" style="color:#7c3aed">/api-docs</a></div>
+        </div>
+
         <div class="footer">
           Built by <a href="https://github.com/hraugusto" target="_blank">@hraugusto</a> · 
           <a href="https://github.com/hraugusto/parking-lot-api" target="_blank">Source code</a>
@@ -66,6 +73,7 @@ app.get('/', (req, res) => {
   `);
 });
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/auth', authRoutes);
 app.use('/vagas', autenticar, vagaRoutes);
 
